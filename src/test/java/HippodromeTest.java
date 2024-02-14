@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +8,8 @@ import java.util.Comparator;
 import java.util.List;
 
 class HippodromeTest {
+    String messageHorsesCannotBeNull = "Horses cannot be null.";
+    String messageHorsesCannotBeEmpty = "Horses cannot be empty.";
 
     @Test
     void createHippodromeWithNullHorsesAndCheckThenExceptionThrows(){
@@ -27,7 +28,8 @@ class HippodromeTest {
             horsesCannotBeNullException = illegalArgumentException;
         }
         assert horsesCannotBeNullException != null;
-        Assertions.assertEquals(horsesCannotBeNullException.getMessage(), "Horses cannot be null.");
+
+        Assertions.assertEquals(messageHorsesCannotBeNull, horsesCannotBeNullException.getMessage());
     }
     @Test
     void createHippodromeWithBlankListOfHorsesAndCheckThenExceptionThrows(){
@@ -45,16 +47,15 @@ class HippodromeTest {
             horsesCannotBeEmptyException = illegalArgumentException;
         }
         assert horsesCannotBeEmptyException != null;
-        Assertions.assertEquals(horsesCannotBeEmptyException.getMessage(), "Horses cannot be empty.");
+        Assertions.assertEquals(messageHorsesCannotBeEmpty, horsesCannotBeEmptyException.getMessage());
     }
 
     @Test
     void checkGetHorsesThenReturnTheCurrentListOfHorses() {
         List<Horse> sourceHorses = getRandomHorses(30, false);
         Hippodrome hippodrome = new Hippodrome(sourceHorses);
-        Assertions.assertEquals(hippodrome.getHorses(), sourceHorses);
+        Assertions.assertEquals(sourceHorses, hippodrome.getHorses());
     }
-    //TODO дописать move
     @Test
     void checkMoveThenCallMoveOnEachHorse() {
         List<Horse> mockedHorses = getRandomHorses(50, true);
@@ -71,7 +72,7 @@ class HippodromeTest {
         double maxDistance = hippodrome.getHorses().stream().
                 max(Comparator.comparing(Horse::getDistance))
                 .get().getDistance();
-        Assertions.assertEquals(hippodrome.getWinner().getDistance(), maxDistance);
+        Assertions.assertEquals(maxDistance, hippodrome.getWinner().getDistance());
     }
 
     private Horse getRandomHorse(boolean isMock){
